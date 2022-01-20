@@ -3,6 +3,7 @@ package com.example.valhallaassignment.ui.posts
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.valhallaassignment.R
@@ -31,10 +32,21 @@ class PostAdapter(
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = posts[holder.adapterPosition]
         holder.itemPostItemBinding.post = post
+        holder.bind()
     }
 
     inner class PostViewHolder(
         val itemPostItemBinding: PostItemBinding,
         val clickListener: (post: Post, action: Int) -> Unit?
-    ): RecyclerView.ViewHolder(itemPostItemBinding.root) {}
+    ): RecyclerView.ViewHolder(itemPostItemBinding.root) {
+
+        fun bind() {
+            val button = itemView.findViewById<Button>(R.id.bDetail)
+            button.setOnClickListener {
+                itemPostItemBinding.post?.let {
+                    clickListener(it, 0)
+                }
+            }
+        }
+    }
 }

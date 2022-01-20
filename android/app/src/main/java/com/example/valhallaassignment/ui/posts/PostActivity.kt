@@ -1,5 +1,6 @@
 package com.example.valhallaassignment.ui.posts
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -12,7 +13,9 @@ import com.example.valhallaassignment.R
 import com.example.valhallaassignment.data.datasource.remote.PostRemoteDatasourceImpl
 import com.example.valhallaassignment.data.repository.PostsRepositoryImpl
 import com.example.valhallaassignment.databinding.ActivityMainBinding
+import com.example.valhallaassignment.domain.entity.Post
 import com.example.valhallaassignment.ui.ViewModelFactory
+import com.example.valhallaassignment.ui.comments.CommentsActivity
 
 
 class PostActivity : AppCompatActivity() {
@@ -24,6 +27,7 @@ class PostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         initializeDependencies()
         setupDatabinding()
+
         this.viewModel.loadPosts()
     }
 
@@ -45,9 +49,15 @@ class PostActivity : AppCompatActivity() {
                 (it.layoutManager as LinearLayoutManager).orientation = LinearLayoutManager.VERTICAL
                 it.setHasFixedSize(true)
                 it.adapter = PostAdapter(posts) { post, action ->
-                    // show the details
+                    showDetails(post)
                 }
             }
         }
+    }
+
+    fun showDetails(post: Post) {
+        val intent = Intent(this, CommentsActivity::class.java)
+        intent.putExtra("post", post)
+        startActivity(intent)
     }
 }
